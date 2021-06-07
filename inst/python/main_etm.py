@@ -17,8 +17,8 @@ import gensim
 from torch import nn, optim
 from torch.nn import functional as F
 
-from etm import ETM
-from utils import nearest_neighbors, get_topic_coherence, get_topic_diversity
+#from etm import ETM
+#from utils import nearest_neighbors, get_topic_coherence, get_topic_diversity
 
 # from data.py
 

@@ -1,28 +1,42 @@
-Package: ETM
+Package: ETMr
 Type: Package
 Title: Embedded Topic Models - Topic Modeling with Word Embeddings
 Version: 0.1.0
 Authors@R: c(
-    person("Adji", "Dieng", email = "abd2141@columbia.edu", role = "aut"),
-
-)
+    person(given = "Adji", family = "Dieng", middle = "B.", email = "abd2141@columbia.edu", role = "aut"),
+    person(given = "Francisco", family = "Ruiz", middle = "J. R.", email = "franrruiz@deepmind.com", role = "aut"),
+    person(given = "David", family = "Blei", middle = "M.", email = "david.blei@columbia.edu", role = "aut"),
+    person(given = "Porey", family = "Lin", email = "lin.porey@gmail.com", role = c("aut", "cre"))
+	)
+Author: Adji B. Dieng [aut], Francisco J. R. Ruiz [aut], David M. Blei [aut],
+	Porey Lin [cre]
 Maintainer: Porey Lin <lin.porey@gmail.com>
-Description: ETM is a topic model that places words and topics in the same embedding
-   space.  ETM produces interpretable topics and word embeddings that are robust to large
-   vocabularies that include rare words and stop words.
+Description: ETMr runs the "embedded topic model" (ETM), which places words and topics in the same embedding
+   space.  The embedded topic model produces interpretable topics and word embeddings that are robust to large
+   vocabularies that include rare words and stop words. As the original algorithm is written in
+   Python, ETMr provides R users with an interface to conveniently install and load Python,
+   and then execute the embedded topic model, all without needing any prior knowledge of Python.
 Config/reticulate:
   list(
     packages = list(
       list(package = "gensim"),
       list(package = "matplotlib"),
       list(package = "numpy"),
-      list(package = "pickle"),
+      list(package = "scikit-learn"),
       list(package = "scipy"),
       list(package = "torch")
     )
   )   
-Imports: reticulate
+Imports: reticulate, parallel
 URL: https://github.com/adjidieng/ETM-r
+BugReports: https://github.com/adjidieng/ETM-r/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.1.9000
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat
+SystemRequirements: Python (>=3.6)
+VignetteBuilder: knitr

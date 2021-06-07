@@ -1,0 +1,19 @@
+citHeader("To cite ETMr in publications, use:")
+
+citEntry(entry = "Article",
+         title        = "Topic Modeling in Embedding Spaces",
+         author       = personList(as.person("Adji B. Dieng"),
+                                   as.person("Francisco J. R. Ruiz"),
+                                   as.person("David M. Blei")),
+         journal      = "Transactions of the Association for Computational Linguistics",
+         year         = "2020",
+         volume       = "8",
+         pages        = "439--453",
+         url          = "https://doi.org/10.1162/tacl_a_00325",
+
+         textVersion  =
+           paste("Adji B. Dieng, Francisco J. R. Ruiz, David M. Blei (2020).",
+                 "Topic Modeling in Embedding Spaces.",
+                 "Transactions of the Association for Computational Linguistics, 8, 439-453.",
+                 "URL https://doi.org/10.1162/tacl_a_00325.")
+)

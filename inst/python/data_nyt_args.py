@@ -5,20 +5,31 @@ import random
 from scipy import sparse
 import itertools
 from scipy.io import savemat, loadmat
+import argparse
+
+parser = argparse.ArgumentParser(description='The Embedded Topic Model')
+
+### data and file related arguments
+parser.add_argument('--data_file', type=str, default='', help='A .txt file containing the corpus')
+parser.add_argument('--max_df', type=int, default=0.7, help='Desired value for maximum document frequency')
+parser.add_argument('--min_df', type=int, default=100, help='Desired value for minimum document frequency')
+
+args = parser.parse_args()
+
 
 # Maximum / minimum document frequency
-max_df = 0.7
-min_df = 100  # choose desired value for min_df
+max_df = args.max_df
+min_df = args.min_df  # choose desired value for min_df
 
 # Read stopwords
-with open('stops.txt', 'r') as f:
-    stops = f.read().split('\n')
+with open('inst/stops.txt', 'r') as f:
+  stops = f.read().split('\n')
 
 # Read data
 print('reading text file...')
-data_file = 'raw/new_york_times_text/nyt_docs.txt'
+data_file = args.data_file
 with open(data_file, 'r') as f:
-    docs = f.readlines()
+  docs = f.readlines()
 
 # Create count vectorizer
 print('counting document frequency of words...')
@@ -31,7 +42,7 @@ sum_counts = cvz.sum(axis=0)
 v_size = sum_counts.shape[1]
 sum_counts_np = np.zeros(v_size, dtype=int)
 for v in range(v_size):
-    sum_counts_np[v] = sum_counts[0,v]
+  sum_counts_np[v] = sum_counts[0,v]
 word2id = dict([(w, cvectorizer.vocabulary_.get(w)) for w in cvectorizer.vocabulary_])
 id2word = dict([(cvectorizer.vocabulary_.get(w), w) for w in cvectorizer.vocabulary_])
 del cvectorizer
@@ -80,7 +91,7 @@ print('  number of documents (valid): {} [this should be equal to {}]'.format(le
 print('removing empty documents...')
 
 def remove_empty(in_docs):
-    return [doc for doc in in_docs if doc!=[]]
+  return [doc for doc in in_docs if doc!=[]]
 
 docs_tr = remove_empty(docs_tr)
 docs_ts = remove_empty(docs_ts)
@@ -98,7 +109,7 @@ docs_ts_h2 = [[w for i,w in enumerate(doc) if i>len(doc)/2.0-1] for doc in docs_
 print('creating lists of words...')
 
 def create_list_words(in_docs):
-    return [x for y in in_docs for x in y]
+  return [x for y in in_docs for x in y]
 
 words_tr = create_list_words(docs_tr)
 words_ts = create_list_words(docs_ts)
@@ -116,8 +127,8 @@ print('  len(words_va): ', len(words_va))
 print('getting doc indices...')
 
 def create_doc_indices(in_docs):
-    aux = [[j for i in range(len(doc))] for j, doc in enumerate(in_docs)]
-    return [int(x) for y in aux for x in y]
+  aux = [[j for i in range(len(doc))] for j, doc in enumerate(in_docs)]
+return [int(x) for y in aux for x in y]
 
 doc_indices_tr = create_doc_indices(docs_tr)
 doc_indices_ts = create_doc_indices(docs_ts)
@@ -149,7 +160,7 @@ del docs_va
 print('creating bow representation...')
 
 def create_bow(doc_indices, words, n_docs, vocab_size):
-    return sparse.coo_matrix(([1]*len(doc_indices),(doc_indices, words)), shape=(n_docs, vocab_size)).tocsr()
+  return sparse.coo_matrix(([1]*len(doc_indices),(doc_indices, words)), shape=(n_docs, vocab_size)).tocsr()
 
 bow_tr = create_bow(doc_indices_tr, words_tr, n_docs_tr, len(vocab))
 bow_ts = create_bow(doc_indices_ts, words_ts, n_docs_ts, len(vocab))
@@ -171,19 +182,19 @@ del doc_indices_va
 # Save vocabulary to file
 path_save = './min_df_' + str(min_df) + '/'
 if not os.path.isdir(path_save):
-    os.system('mkdir -p ' + path_save)
+  os.system('mkdir -p ' + path_save)
 
 with open(path_save + 'vocab.pkl', 'wb') as f:
-    pickle.dump(vocab, f)
+  pickle.dump(vocab, f)
 del vocab
 
 # Split bow intro token/value pairs
 print('splitting bow intro token/value pairs and saving to disk...')
 
 def split_bow(bow_in, n_docs):
-    indices = [[w for w in bow_in[doc,:].indices] for doc in range(n_docs)]
-    counts = [[c for c in bow_in[doc,:].data] for doc in range(n_docs)]
-    return indices, counts
+  indices = [[w for w in bow_in[doc,:].indices] for doc in range(n_docs)]
+counts = [[c for c in bow_in[doc,:].data] for doc in range(n_docs)]
+return indices, counts
 
 bow_tr_tokens, bow_tr_counts = split_bow(bow_tr, n_docs_tr)
 savemat(path_save + 'bow_tr_tokens', {'tokens': bow_tr_tokens}, do_compression=True)

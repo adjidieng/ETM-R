@@ -1,22 +1,54 @@
-#' Install all Python Packages
+#' Manually Install Python Packages
 #' @description
-#' Installs a specific uninstalled Python package.  Most users of `ETMr` will not
-#' need to use this function because `ETMr` should automatically
-#' installs all necessary Python packages.  The reasons to manually install
-#' Python packages are: 1) to use GPUs with PyTorch; or 2) to use a virtual
-#' environment outside of the one launched with the `start_etm` function
-#' (in other words, a virtual environment not named `r-reticulate`).  `install_py_package`
-#' installs one package at a time.  Advanced users are encouraged to use
-#' the `reticulate::py_install` function directly.
-#'
-#' @param package_name The Python package to install
+#' By default, ETMr should automatically install all necessary Python packages.
+#' Nevertheless, this function provides a way to manually install all necessary Python
+#' packages.  This function is useful in two settings: first, to install and load Python
+#' packages in a non-default virtual environment (not "r-reticulate"), or second, to
+#' install versions of Python packages to utilize GPUs for machine learning.  "install_py_packages"
+#' provides parameters to install either all Python packages, or just the GPU-optimized packages (PyTorch).
+#' @param install_method Installation method for the Python packages.  By default,
+#' the installation method is "conda".  Linus and Mac users may also select the installation
+#' method "virtualenv" (Windows users are limited to only the "conda" installation method).
+#' @param packages A vector of the package names to install.  By default, this will install all
+#' of the necessary Python packages, namely: gensim, matplotlib, numpy, scikit-learn (sklearn),
+#' scipy and PyTorch (torch). Boolean (TRUE or FALSE) entry, with FALSE as default.
+#' Note that if the installation method is "conda", the PyTorch package is named "pytorch", whereas if the
+#' installation method is "virtualenv", then the PyTorch package is named "torch".
+#' @param env_name The name of the virtual environment in which Python packages are to
+#' be installed.  Users are highly encouraged to keep the virtual environment name as the default name,
+#' "r-reticulate", for consistency.
+#' @param conda The path to a conda executable.  The default option, "auto",
+#' will automatically find an appropriate conda binary (see \code{\link[reticulate]{py_install}} for more information).
+#' @param pip Uses pip (the native python package installer) for package installation.
+#' Boolean entry, with "FALSE" as default.
 #' @examples
-#' install_py_package("gensim")
-#'
+#' \dontrun{
+#' install_py_package()
+#' install_py_package(c("pytorch", "torchvision"), install_method = c("conda"))
+#' install_py_package(c("torch", "torchvision"), install_method = c("virtualenv"))
+#' }
+
 #' @export
 install_py_package <-
-  function(package_name){
-    py_install(package_name,
-               method = "auto",
-               envname = "r-reticulate")
+  function(packages = c("gensim","matplotlib","numpy",
+                          "sklearn","scipy", "torch"),
+            install_method = c("conda"),
+           conda = "auto",
+           env_name = "r-reticulate",
+           pip = FALSE
+           ){
+    message("Checking if Python packages need to be installed...")
+    if(sum(sapply(c("gensim","matplotlib","numpy",
+                    "sklearn","scipy", "torch"),
+                  py_module_available)) != 6){
+      reticulate::py_install(
+        packages = packages,
+        method = install_method,
+        envname = env_name,
+        conda = conda,
+        pip = FALSE)
+      message("All Python packages installed.")
+    } else{
+      message("All Python packages are installed.")
+    }
   }

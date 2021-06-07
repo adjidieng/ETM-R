@@ -10,15 +10,17 @@
 #' @param epochs Number of times the dataset is fed into the algorithm for
 #' learning.  The default number of epochs is 1000.  Minimum number of epochs is 1.
 #' @examples
+#' \dontrun{
 #' etm_prefit(dataset_name = "corpus_1", data_path = "Desktop/", embed_path = "Desktop/embed/",
 #'  num_topics = 50, epochs = 1000)
+#' }
 #' @export
-
 etm_prefit <- function(dataset_name,
-                         data_path,
-                         embed_path,
-                         num_topics = 50,
-                         epochs = 1000) {
-  os$system(paste("python Python/main_etm.py --mode train --dataset ",dataset_name, "--data_path ",data_path, "--emb_path", embed_path, "--num_topics ", num_topics, "--train_embeddings 0 --epochs ", epochs))
+                       data_path,
+                       embed_path,
+                       num_topics = 50,
+                       epochs = 1000) {
+  subprocess$call(paste("python inst/main_etm.py --mode train --dataset ",dataset_name, "--data_path ",data_path, "--emb_path", embed_path, "--num_topics ", num_topics, "--train_embeddings 0 --epochs ", epochs),
+                  shell = TRUE)
 
 }
