@@ -1,0 +1,38 @@
+#' ETMr: A package for running topic models with word embeddings.
+#'
+#' The ETMr package runs the embedded topic model (ETM), which produces
+#' interpretable topics and word embeddings that are robust to large
+#' vocabularies that include rare words and stop words.  This package is
+#' an R wrapper to the ETM package, originally written in Python.
+#' As an R wrapper, this package conveniently performs all of the Python code and
+#' necessary installations, all completely in R.  The goal of this package is to
+#' appeal to computer scientists and social scientists who may be interested in
+#' cutting-edge text and natural language processing models, but who are not as
+#' proficient in Python as they are in R.
+#'
+#' @section Benefits of ETMr:
+#' 1) No prior knowledge of Python.  All of the necessary installations (even installing Python!)
+#' and Python scripts are executed using R functions.
+#'
+#' 2) Speed and efficiency.  The original ETM Python code is optimized for speed and efficiency.
+#' As ETMr is executing the same underlying Python code, users of ETMr will expect
+#' the same level of speed and efficiency.
+#'
+#' 3) Customizable applications.  ETMr can be applied on any corpus using the convenient
+#' R functions provided in this package.
+#'
+#' @section What ETMr Does:
+#' ETMr provides four steps to evaluate words and topics in a corpus.  First,
+#' preprocessing: converting a raw text file or corpus into
+#' a bag-of-words representation (e.g. tokens and counts).  Second, word embeddings:
+#' fitting word embeddings (numerical representations of text) onto
+#' the text.  Third, modeling: applying the embedded topic model onto the
+#' preprocessed corpus and the fitted word embeddings to produce interpretable topics.  And finally,
+#' evaluation: evaluating the topic diversity and coherence of the corpus, and then
+#' visualizing the top results of the topics.
+#'
+#' @docType package
+#' @name ETMr
+#' @seealso The original ETM package, written in Python: \url{https://github.com/adjidieng/ETM}
+NULL
+#> NULL
