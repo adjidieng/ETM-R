@@ -8,3 +8,6 @@ To do:
 2. convert data_nyt.py into a bash-able script (i.e. with arguments via argparser).  Specifically, need parameters in the form of minimum document frequency, maximum document frequency, the name of the stopwords text file, and the dataset file name/path.
 3. Add scikit-learn as necessary Python package in the DESCRIPTION file.
 4. Consider adding another use-case example (e.g. social media data)
+
+## Update
+Archived so that R package can be called ETMr.  Please refer to the ETMr page
